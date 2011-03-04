@@ -10,4 +10,5 @@
 
 (defun initialise-system ()
   (dolist (file *files*)
+    (format t "~&Loading: ~a~%" file)
     (load file)))
