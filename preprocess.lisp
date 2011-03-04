@@ -26,6 +26,7 @@
 ;;;; SQLite DB schemas.
 (defun initialise-db ()
   (connect (list ":memory:") :database-type :sqlite3)
+  ;(connect (list "/home/varoun/tmp/data/nagios/nagios.db") :database-type :sqlite3)
   ;; Table to store the raw alerts.
   (execute-command "create table alerts (time integer, node integer, parameter integer, status
 char(1))") 
@@ -35,6 +36,7 @@ char(1))")
   (execute-command "create table parameters (pid integer, pname varchar(50))")
   ;; Table for the current set of criticals at a point in time.
   (execute-command "create table currentset (time integer, crits varchar(5000))")
+  (execute-command "create view alerts_ordered as select * from alerts order by time")
   (format t "~&Finished initialising the DB.~%"))
 
 
