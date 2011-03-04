@@ -1,0 +1,13 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;; GrokLogs - Initialisation 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defvar *files* 
+  '(#p"/home/varoun/Code/groklogs-ng/packages.lisp"
+    #p"/home/varoun/Code/groklogs-ng/utils.lisp"
+    #p"/home/varoun/Code/groklogs-ng/preprocess.lisp"
+    #p"/home/varoun/Code/groklogs-ng/learn.lisp"))
+
+(defun initialise-system ()
+  (dolist (file *files*)
+    (load file)))
