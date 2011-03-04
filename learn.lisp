@@ -4,8 +4,13 @@
 
 (in-package :com.groklogs.learn)
 
+;;; By default, we do not treat "Warnings" as "Criticals".
  (defparameter *treat-warnings-as-critp* nil
    "Should we treat WARN as CRIT")
+
+;;; Training set / test set split. 
+(defparameter *training-set-size* 70
+  "Percentage of the input data that should be reserved for training.")
 
  ;;;; We begin by building the current set.
 
@@ -66,15 +71,30 @@
        (when (> timestamp (current-set-timestamp set))
 	 (execute-command
 	  (format nil "insert into currentset values (~a, \"~a\")"
-		  (current-set-timestamp set)
+		  timestamp ; this is not (current-set-timestamp set) because it starts as 0.
 		  (prin1-to-string (current-set-crits set)))))
        (update-set set timestamp host param (coerce status 'character))))
    #.(locally-disable-sql-reader-syntax))
 
-
-
-
-
-
-
-
+;;; The current-set is split into 2, one to train with and one to test with. By default, we use
+;;; a 70:30 split, as defined by *training-set-size*. We create two views on the CURRENTSET
+;;; table, one for training and one for testing.
+(defun partition-data (&optional (split *training-set-size*))
+  "Partition the input data into a training and a test set."
+  #.(locally-enable-sql-reader-syntax)
+  (let* ((end-time (car (select [max [time]] :from [currentset] :flatp t)))
+	 (start-time (car (select [min [time]] :from [currentset] :flatp t)))
+	 (boundary (+ start-time
+		      (round (/ (* (- end-time start-time) split)
+				100)))))
+    (format t "~&Splitting at time: ~a" boundary)
+    (execute-command 
+     "create view currentset_training as 
+      select * from currentset where time<=1296533899 order by time")
+    (execute-command
+     "create view currentset_test as 
+      select * from currentset where time>1296533899 order by time")
+    (format t "~&View for training: ~a~&View for testing: ~a~%"
+	    "CURRENTSET_TRAINING" "CURRENTSET_TEST")
+	    
+  #.(locally-disable-sql-reader-syntax)))
