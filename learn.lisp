@@ -140,7 +140,7 @@
     (setf (datapoint-positive dp) new-crits)))
 
 ;;; Constructor for datapoints.
-(defun create-datapoint (timestamp nodeid paramid crits)
+(defun make-datapoint (timestamp nodeid paramid crits)
   (make-instance 'datapoint 
 		 :timestamp timestamp
 		 :nodeid nodeid
