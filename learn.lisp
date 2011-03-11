@@ -98,3 +98,51 @@
 	    "CURRENTSET_TRAINING" "CURRENTSET_TEST")
 	    
   #.(locally-disable-sql-reader-syntax)))
+
+;;; Datapoints - We collapse all successive critical alerts for a node+service into one time
+;;; slice. The datapoint class stores the timestamp when the alert went from CRIT to OK, i.e
+;;; when it disappeared from the critical set, node and parameter ids and the set of features
+;;; for the positive and negetive example for that timeslice. 
+(defclass datapoint ()
+  ((timestamp :initarg :timestamp :accessor datapoint-timestamp)
+   (nodeid :initarg :nodeid :reader datapoint-nodeid)
+   (paramid :initarg :paramid :reader datapoint-paramid)
+   (positive-example :initarg :positive-example :accessor datapoint-positive)
+   (negetive-example :initform nil :accessor datapoint-negetive)))
+
+;;; Initialising and updating datapoints.
+
+(defgeneric update-datapoint (datapoint timestamp crits output-class)
+  (:documentation 
+"Update the datapoint example with the correct set of criticals"))
+
+;;; We need to update the timestamp only when we encounter the negetive example after the
+;;; sequence of positive examples.
+(defmethod update-datapoint :before ((dp datapoint) timestamp crits (class (eql 0)))
+  (declare (ignore crits class))
+  (let ((ts (datapoint-timestamp dp)))
+    (if (< timestamp ts)
+	(error 'time-went-backwards :timestamp timestamp)
+	(setf (datapoint-timestamp dp) timestamp))))
+
+(defmethod update-datapoint ((dp datapoint) timestamp crits (class (eql 0)))
+  (declare (ignore timestamp class))
+  (setf (datapoint-negetive dp) crits))
+
+(defmethod update-datapoint :after ((dp datapoint) timestamp crits (class (eql 0)))
+  "Stub for the after-method. We update the database here!"
+  (declare (ignore dp timestamp crits class))
+  (values))
+
+(defmethod update-datapoint ((dp datapoint) timestamp crits (class (eql 1)))
+  (declare (ignore timestamp class))
+  (let ((new-crits (union crits (datapoint-positive dp) :test #'equal)))
+    (setf (datapoint-positive dp) new-crits)))
+
+;;; Constructor for datapoints.
+(defun create-datapoint (timestamp nodeid paramid crits)
+  (make-instance 'datapoint 
+		 :timestamp timestamp
+		 :nodeid nodeid
+		 :paramid paramid
+		 :positive-example crits))
