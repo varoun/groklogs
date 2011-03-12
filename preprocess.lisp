@@ -37,6 +37,8 @@ char(1))")
   ;; Table for the current set of criticals at a point in time.
   (execute-command "create table currentset (time integer, crits varchar(5000))")
   (execute-command "create view alerts_ordered as select * from alerts order by time")
+  (execute-command "create table datapoints (time integer, nodeid integer, paramid integer,
+crits varchar(5000), class integer)") 
   (format t "~&Finished initialising the DB.~%"))
 
 
