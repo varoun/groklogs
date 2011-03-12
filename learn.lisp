@@ -130,9 +130,21 @@
   (setf (datapoint-negetive dp) crits))
 
 (defmethod update-datapoint :after ((dp datapoint) timestamp crits (class (eql 0)))
-  "Stub for the after-method. We update the database here!"
-  (declare (ignore dp timestamp crits class))
-  (values))
+  "Update the database."
+  (declare (ignore timestamp crits))
+  (let ((timestamp (datapoint-timestamp dp))
+	(nodeid (datapoint-nodeid dp))
+	(paramid (datapoint-paramid dp))
+	(positives (prin1-to-string (datapoint-positive dp)))
+	(negetives (prin1-to-string (datapoint-negetive dp))))
+    (execute-command 
+     (format nil "insert into datapoints values (~a, ~a, ~a, \"~a\", ~a)"
+	     timestamp nodeid paramid positives 1))
+    (execute-command 
+     (format nil "insert into datapoints values (~a, ~a, ~a, \"~a\", ~a)"
+	   timestamp nodeid paramid negetives 0))))
+
+
 
 (defmethod update-datapoint ((dp datapoint) timestamp crits (class (eql 1)))
   (declare (ignore timestamp class))
@@ -146,3 +158,31 @@
 		 :nodeid nodeid
 		 :paramid paramid
 		 :positive-example crits))
+
+;;; Building all datapoints.
+(defun build-datapoints ()
+  #.(locally-enable-sql-reader-syntax)
+  (let ((object-buffer (make-array 1 :fill-pointer 0 :adjustable t)))
+    (do-query ((timestamp criticals)
+	       [select [*] :from [currentset_training]])
+      (let ((crits (read-from-string criticals))
+	    (object-list nil))
+	;; First update existing objects.
+	(loop 
+	   for dp-object across object-buffer while dp-object do ;dont remove 'while dp-obj...
+	     (let ((event (list (datapoint-nodeid dp-object) (datapoint-paramid dp-object))))
+	       (push event object-list)
+	       (if (member event crits :test #'equal)
+		   (update-datapoint dp-object timestamp crits 1)
+		   (progn
+		     (update-datapoint dp-object timestamp crits 0)
+		     (delete dp-object object-buffer :test #'equal)))))
+	;; Add objects for new crits.
+	(dolist (crit crits)
+	  (unless (member crit object-list :test #'equal)
+	    (vector-push-extend (make-datapoint timestamp
+						(first crit)
+						(second crit)
+						(remove crit crits :test #'equal))
+				object-buffer))))))
+  #.(locally-disable-sql-reader-syntax))
