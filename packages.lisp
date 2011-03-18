@@ -10,13 +10,32 @@
 (defpackage :com.groklogs.utils
   (:use :cl :clsql))
 
+;;;; Database schemas.
+(defpackage :com.groklogs.schema
+  (:use :cl :clsql :com.groklogs.utils))
+
 ;;;; Preprocessing logs.
 (defpackage :com.groklogs.preprocess
   (:use 
    :cl
    :cl-ppcre
-   :clsql))
+   :clsql
+   :com.groklogs.utils)
+  (:export :initialise-db 
+	   :parse-log-file))
 
-;;;; The main learning code.
+;;;; The learning code.
 (defpackage :com.groklogs.learn
-  (:use :cl :clsql))
+  (:use :cl :clsql :com.groklogs.utils)
+  (:export :build-current-set
+	   :partition-data
+	   :build-datapoints
+	   :build-complete-featurespaces))
+
+;;;; The 'MAIN' entrypoint.
+(defpackage :com.groklogs.main
+  (:use :cl :clsql 
+	:com.groklogs.utils
+	:com.groklogs.schema
+	:com.groklogs.preprocess
+	:com.groklogs.learn))
