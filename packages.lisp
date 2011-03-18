@@ -12,7 +12,8 @@
 
 ;;;; Database schemas.
 (defpackage :com.groklogs.schema
-  (:use :cl :clsql :com.groklogs.utils))
+  (:use :cl :clsql :com.groklogs.utils)
+  (:export :initialise-db))
 
 ;;;; Preprocessing logs.
 (defpackage :com.groklogs.preprocess
@@ -21,8 +22,7 @@
    :cl-ppcre
    :clsql
    :com.groklogs.utils)
-  (:export :initialise-db 
-	   :parse-log-file))
+  (:export :parse-log-file))
 
 ;;;; The learning code.
 (defpackage :com.groklogs.learn
