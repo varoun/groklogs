@@ -132,17 +132,20 @@
 (defmethod update-datapoint :after ((dp datapoint) timestamp crits (class (eql 0)))
   "Update the database."
   (declare (ignore timestamp crits))
-  (let ((timestamp (datapoint-timestamp dp))
-	(nodeid (datapoint-nodeid dp))
-	(paramid (datapoint-paramid dp))
-	(positives (prin1-to-string (datapoint-positive dp)))
-	(negetives (prin1-to-string (datapoint-negetive dp))))
+  (let* ((timestamp (datapoint-timestamp dp))
+	 (nodeid (datapoint-nodeid dp))
+	 (paramid (datapoint-paramid dp))
+	 (positives (prin1-to-string (datapoint-positive dp)))
+	 (negetives (prin1-to-string (datapoint-negetive dp)))
+	 (nodeparam (parse-integer (concatenate 'string 
+						(write-to-string nodeid)
+						(write-to-string paramid)))))
     (execute-command 
-     (format nil "insert into datapoints values (~a, ~a, ~a, \"~a\", ~a)"
-	     timestamp nodeid paramid positives 1))
+     (format nil "insert into datapoints values (~a, ~a, \"~a\", ~a)"
+	     timestamp nodeparam positives 1))
     (execute-command 
-     (format nil "insert into datapoints values (~a, ~a, ~a, \"~a\", ~a)"
-	   timestamp nodeid paramid negetives 0))))
+     (format nil "insert into datapoints values (~a, ~a, \"~a\", ~a)"
+	   timestamp nodeparam negetives 0))))
 
 
 
