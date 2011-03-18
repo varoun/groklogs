@@ -41,6 +41,7 @@ char(1))")
 varchar(5000), class integer)")  
   (execute-command "create table featureindex (nodeparam integer primary key, fvector
 varchar(5000))") 
+  (execute-command "create table featurespace (nodeparam integer primary key, examples varchar(5000))")
   (format t "~&Finished initialising the DB.~%"))
 
 

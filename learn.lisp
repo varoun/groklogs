@@ -211,3 +211,38 @@
   #.(locally-disable-sql-reader-syntax))
 
 
+;; Build a row of featurespace for the node-param. This takes a list of crits for the
+;; node-param, output-class and the feature-vector and returns a list of 1' and 0's that is the
+;; datapoint-class and datapoint-features for that row.
+(defun make-datapoint-features-class (crits class fvector)
+  (let ((output nil))
+    (loop 
+       for element across fvector
+       do
+	 (if (member element crits :test #'equal)
+	     (push 1 output)
+	     (push 0 output))
+       finally (return (cons (nreverse output) class)))))
+
+;;; Make the featurespace for a node and parameter.
+(defun make-featurespace (node-param)
+  #.(locally-enable-sql-reader-syntax)
+  (let ((fvector (make-featureindex node-param))
+	(result nil))
+    (do-query ((crits class)
+	       [select [crits] [class] :from [datapoints] :where [= [nodeparam] node-param]])
+      (push (make-datapoint-features-class (read-from-string crits)
+					   class
+					   fvector)
+	    result)))
+  #.(locally-disable-sql-reader-syntax))
+
+;;; Building the complete featurespace for all nodes/parameters
+(defun build-complete-featurespaces ()
+  (dolist (node-param (remove-duplicates (query "select nodeparam from datapoints")
+					 :test #'equal))
+    (let ((feature-space (make-featurespace node-param)))
+      (execute-command 
+       (format nil "insert into featurespace values (~a, \"~a\")"
+	       node-param
+	       (prin1-to-string feature-space))))))
