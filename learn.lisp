@@ -189,3 +189,25 @@
 						(remove crit crits :test #'equal))
 				object-buffer))))))
   #.(locally-disable-sql-reader-syntax))
+
+;;; Building the feature space.
+
+;; This creates the elements of the featurespace by using UNION on all the datapoint criticals
+;; for a particular node and parameter. The elements are stored in a feature vector so that it
+;; may be referrenced later.
+;; MAKE-FEATUREINDEX will error out if called with the same node-param twice because it is the
+;; table's primary key. 
+(defun make-featureindex (node-param)
+  #.(locally-enable-sql-reader-syntax)
+  (let ((features nil))
+    (do-query ((crits)
+	       [select [crits] :from [datapoints] :where [= [nodeparam] node-param]])
+      (setf features (union features (read-from-string crits) :test #'equal)))
+    (execute-command (format nil
+			     "insert into featureindex values (~a, \"~a\")"
+			     node-param
+			     (prin1-to-string (coerce features 'vector))))
+    (coerce features 'vector))
+  #.(locally-disable-sql-reader-syntax))
+
+

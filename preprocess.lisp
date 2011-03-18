@@ -39,6 +39,8 @@ char(1))")
   (execute-command "create view alerts_ordered as select * from alerts order by time")
   (execute-command "create table datapoints (time integer, nodeparam integer, crits
 varchar(5000), class integer)")  
+  (execute-command "create table featureindex (nodeparam integer primary key, fvector
+varchar(5000))") 
   (format t "~&Finished initialising the DB.~%"))
 
 
