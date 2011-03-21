@@ -7,7 +7,8 @@
     #p"/home/varoun/Code/groklogs-ng/utils.lisp"
     #p"/home/varoun/Code/groklogs-ng/schema.lisp"
     #p"/home/varoun/Code/groklogs-ng/preprocess.lisp"
-    #p"/home/varoun/Code/groklogs-ng/learn.lisp"))
+    #p"/home/varoun/Code/groklogs-ng/learn.lisp"
+    #p"/home/varoun/Code/groklogs-ng/dnf.lisp"))
 
 (defun initialise-system ()
   (dolist (file *files*)
