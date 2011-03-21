@@ -176,7 +176,10 @@
 	     (let ((event (list (datapoint-nodeid dp-object) (datapoint-paramid dp-object))))
 	       (push event object-list)
 	       (if (member event crits :test #'equal)
-		   (update-datapoint dp-object timestamp crits 1)
+		   (update-datapoint dp-object 
+				     timestamp 
+				     (remove event crits :test #'equal)
+				     1)
 		   (progn
 		     (update-datapoint dp-object timestamp crits 0)
 		     (delete dp-object object-buffer :test #'equal)))))
