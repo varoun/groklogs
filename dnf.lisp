@@ -146,8 +146,12 @@ conjunct"
   #.(locally-enable-sql-reader-syntax)
   (do-query ((node-param data)
 	     [select [nodeparam] [examples] :from [featurespace]])
-    (let ((examples (read-from-string data)))
-      (format t "~&Node/Param:~a Dep:~a~%" 
-	      node-param
-	      (learn-dnf examples *epsilon*))))
+    (let ((examples (read-from-string data))
+	  (nodeid (parse-integer (subseq (write-to-string node-param) 0 2)))
+	  (paramid (parse-integer (subseq (write-to-string node-param) 2))))
+      (format t "~&~a:~a <---: ~a~%" 
+	      (node-name nodeid)
+	      (param-name paramid)
+	      (dependency-names node-param  (learn-dnf examples *epsilon*)))))
   #.(locally-disable-sql-reader-syntax))
+

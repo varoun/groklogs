@@ -249,3 +249,37 @@
        (format nil "insert into featurespace values (~a, \"~a\")"
 	       node-param
 	       (prin1-to-string feature-space))))))
+
+;;; Selectors for the names of nodes and parameters.
+(defun node-name (nid)
+  (caar (query (format nil "select nname from nodes where nid=~a"  nid))))
+
+(defun param-name (pid)
+  (caar (query (format nil "select pname from parameters where pid=~a" pid))))
+
+(defun node-and-param-name (fvector index)
+  (let* ((node-param-ids 
+	 (elt fvector (1- index))) ; features use 1 based index, fvectors are 0 based.
+	(nname (node-name (first node-param-ids)))
+	(pname (param-name (second node-param-ids))))
+    (concatenate 'string  nname ":" pname)))
+
+
+(defun dependency-names (node-param dnf-expr)
+  (let ((fvector (read-from-string
+		  (caar 
+		  (query (format nil "select fvector from featureindex where nodeparam=~a"
+				 node-param)))))
+	(result nil))
+    (dolist (conjunction dnf-expr)
+      (when conjunction
+	(let ((partial nil))
+	  (dolist (feature conjunction)
+	    (push (node-and-param-name fvector feature) partial))
+	  (push partial result))))
+    result))
+
+
+
+	 
+	 
