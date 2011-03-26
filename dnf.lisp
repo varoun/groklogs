@@ -147,8 +147,8 @@ conjunct"
   (do-query ((node-param data)
 	     [select [nodeparam] [examples] :from [featurespace]])
     (let ((examples (read-from-string data))
-	  (nodeid (parse-integer (subseq (write-to-string node-param) 0 2)))
-	  (paramid (parse-integer (subseq (write-to-string node-param) 2))))
+	  (nodeid (parse-integer (subseq node-param 0 2)))
+	  (paramid (parse-integer (subseq node-param 2))))
       (format t "~&~a:~a <---: ~a~%" 
 	      (node-name nodeid)
 	      (param-name paramid)

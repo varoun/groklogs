@@ -18,9 +18,9 @@ char(1))")
   ;; Table for the current set of criticals at a point in time.
   (execute-command "create table currentset (time integer, crits varchar(5000))")
   (execute-command "create view alerts_ordered as select * from alerts order by time")
-  (execute-command "create table datapoints (time integer, nodeparam integer, crits
+  (execute-command "create table datapoints (time integer, nodeparam char(4), crits
 varchar(5000), class integer)")  
-  (execute-command "create table featureindex (nodeparam integer primary key, fvector
+  (execute-command "create table featureindex (nodeparam char(4) primary key, fvector
 varchar(5000))") 
-  (execute-command "create table featurespace (nodeparam integer primary key, examples varchar(5000))")
+  (execute-command "create table featurespace (nodeparam char(4) primary key, examples varchar(5000))")
   (format t "~&Finished initialising the DB.~%"))

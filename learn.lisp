@@ -137,14 +137,12 @@
 	 (paramid (datapoint-paramid dp))
 	 (positives (prin1-to-string (datapoint-positive dp)))
 	 (negetives (prin1-to-string (datapoint-negetive dp)))
-	 (nodeparam (parse-integer (concatenate 'string 
-						(write-to-string nodeid)
-						(write-to-string paramid)))))
+	 (nodeparam (format nil "~2,'0d~2,'0d" nodeid paramid)))
     (execute-command 
-     (format nil "insert into datapoints values (~a, ~a, \"~a\", ~a)"
+     (format nil "insert into datapoints values (~a, \"~a\", \"~a\", ~a)"
 	     timestamp nodeparam positives 1))
     (execute-command 
-     (format nil "insert into datapoints values (~a, ~a, \"~a\", ~a)"
+     (format nil "insert into datapoints values (~a, \"~a\", \"~a\", ~a)"
 	   timestamp nodeparam negetives 0))))
 
 
@@ -207,7 +205,7 @@
 	       [select [crits] :from [datapoints] :where [= [nodeparam] node-param]])
       (setf features (union features (read-from-string crits) :test #'equal)))
     (execute-command (format nil
-			     "insert into featureindex values (~a, \"~a\")"
+			     "insert into featureindex values (\"~a\", \"~a\")"
 			     node-param
 			     (prin1-to-string (coerce features 'vector))))
     (coerce features 'vector))
@@ -242,11 +240,13 @@
 
 ;;; Building the complete featurespace for all nodes/parameters
 (defun build-complete-featurespaces ()
-  (dolist (node-param (remove-duplicates (query "select nodeparam from datapoints")
-					 :test #'equal))
+  (dolist (node-param (remove-duplicates 
+		       (apply #'append
+			      (query "select nodeparam from datapoints"))
+			      :test #'equal))
     (let ((feature-space (make-featurespace node-param)))
       (execute-command 
-       (format nil "insert into featurespace values (~a, \"~a\")"
+       (format nil "insert into featurespace values (\"~a\", \"~a\")"
 	       node-param
 	       (prin1-to-string feature-space))))))
 
@@ -259,16 +259,18 @@
 
 (defun node-and-param-name (fvector index)
   (let* ((node-param-ids 
-	 (elt fvector (1- index))) ; features use 1 based index, fvectors are 0 based.
+	 (elt fvector (1- (abs index)))) ; features use 1 based index, fvectors are 0 based.
 	(nname (node-name (first node-param-ids)))
 	(pname (param-name (second node-param-ids))))
-    (concatenate 'string  nname ":" pname)))
+    (if (minusp index) ; The DNF code can negate features!
+	(concatenate 'string "-" nname ":" pname)
+	(concatenate 'string  nname ":" pname))))
 
 
 (defun dependency-names (node-param dnf-expr)
   (let ((fvector (read-from-string
 		  (caar 
-		  (query (format nil "select fvector from featureindex where nodeparam=~a"
+		  (query (format nil "select fvector from featureindex where nodeparam=\"~a\""
 				 node-param)))))
 	(result nil))
     (dolist (conjunction dnf-expr)
@@ -279,7 +281,3 @@
 	  (push partial result))))
     result))
 
-
-
-	 
-	 
