@@ -167,7 +167,7 @@
   #.(locally-enable-sql-reader-syntax)
   (let ((object-buffer (make-array 1 :fill-pointer 0 :adjustable t)))
     (do-query ((timestamp criticals)
-	       [select [*] :from [currentset_training]])
+	       [select [*] :from [currentset]])
       (let ((crits (read-from-string criticals))
 	    (object-list nil))
 	;; First update existing objects.
