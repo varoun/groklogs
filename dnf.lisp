@@ -150,8 +150,8 @@ conjunct"
 	  (nodeid (parse-integer (subseq node-param 0 2)))
 	  (paramid (parse-integer (subseq node-param 2))))
       (format t "~&~a:~a <---: ~a~%" 
-	      (node-name nodeid)
-	      (param-name paramid)
-	      (dependency-names node-param  (learn-dnf examples *epsilon*)))))
+	      nodeid
+	      paramid
+	      (learn-dnf examples *epsilon*))))
   #.(locally-disable-sql-reader-syntax))
 
