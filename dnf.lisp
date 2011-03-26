@@ -149,9 +149,10 @@ conjunct"
     (let ((examples (read-from-string data))
 	  (nodeid (parse-integer (subseq node-param 0 2)))
 	  (paramid (parse-integer (subseq node-param 2))))
-      (format t "~&~a:~a <---: ~a~%" 
+      (execute-command
+       (format nil "insert into dependencies values (~a,~a, \"~a\")"
 	      nodeid
 	      paramid
-	      (learn-dnf examples *epsilon*))))
+	      (prin1-to-string (learn-dnf examples *epsilon*))))))
   #.(locally-disable-sql-reader-syntax))
 

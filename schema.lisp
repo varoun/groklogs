@@ -22,5 +22,8 @@ char(1))")
 varchar(5000), class integer)")  
   (execute-command "create table featureindex (nodeparam char(4) primary key, fvector
 varchar(5000))") 
-  (execute-command "create table featurespace (nodeparam char(4) primary key, examples varchar(5000))")
+  (execute-command "create table featurespace (nodeparam char(4) primary key, examples
+varchar(5000))") 
+  (execute-command "create table dependencies (nodeid integer, paramid integer, dnf
+varchar(200))") 
   (format t "~&Finished initialising the DB.~%"))
