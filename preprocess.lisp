@@ -4,11 +4,7 @@
 
 (in-package :com.groklogs.preprocess)
 
-;;;; Debug level
-(defparameter *debug* 0)
-
 ;;;; The REGEX parsers for the time, hostname, parameter and status.
-
 (defvar *nagios-hostname-regex* 
   (cl-ppcre:create-scanner "snode=[a-z]*!([a-z0-9\.]*)"))
 (defvar *nagios-parameter-regex* 

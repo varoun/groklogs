@@ -8,7 +8,8 @@
 
 ;;;; All utility functions.
 (defpackage :com.groklogs.utils
-  (:use :cl :clsql))
+  (:use :cl :clsql)
+  (:export :*debug*))
 
 ;;;; Database schemas.
 (defpackage :com.groklogs.schema

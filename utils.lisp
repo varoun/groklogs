@@ -4,4 +4,5 @@
 
 (in-package :com.groklogs.utils)
 
-;;;; Any utility procedures go here.
+;;;; Debug level
+(defparameter *debug* 0)

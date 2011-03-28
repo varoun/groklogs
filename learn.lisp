@@ -47,7 +47,8 @@
    (let ((crit-events (current-set-crits set)))
      (if (member `(,host ,param) crit-events :test #'equal)
 	 (progn
-	   (format t "~&~a Went OK!~%" `(,host ,param))
+	   (when (> *debug* 0)
+	     (format t "~&~a Went OK!~%" `(,host ,param)))
 	   (setf (current-set-crits set)
 		 (delete (list host param) crit-events :test #'equal))
 	 crit-events))))
