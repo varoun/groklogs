@@ -6,8 +6,12 @@
 
 ;;;; SQLite DB schemas.
 (defun initialise-db ()
-  (connect (list ":memory:") :database-type :sqlite3)
-  ;(connect (list "/home/varoun/tmp/data/nagios/nagios.db") :database-type :sqlite3)
+  ;(connect (list ":memory:") :database-type :sqlite3)
+  (connect (list "/home/varoun/tmp/data/nagios/new3/nagios.db") :database-type :sqlite3)
+  ;; Turn off features for increasing speed.
+  (execute-command "PRAGMA synchronous = 0")
+  (execute-command "PRAGMA journal_mode = OFF")
+  (execute-command "PRAGMA cache_size = 200000")
   ;; Table to store the raw alerts.
   (execute-command "create table alerts (time integer, node integer, parameter integer, status
 char(1))") 
