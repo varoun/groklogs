@@ -156,3 +156,17 @@ conjunct"
 	      (prin1-to-string (learn-dnf examples *epsilon*))))))
   #.(locally-disable-sql-reader-syntax))
 
+
+;;; Printing the dependencies.
+(defun print-dependencies-dnf ()
+  #.(locally-enable-sql-reader-syntax)
+  (do-query ((nodeid paramid dnf)
+	     [select [*] :from [dependencies]])
+    (let ((node-param (format nil "~2,'0d~2,'0d" nodeid paramid))
+	  (dnf-expr (read-from-string dnf)))
+      (format t "~&~a:~a ::: ~a~%" 
+	      (node-name nodeid)
+	      (param-name paramid )
+	      (dependency-names node-param dnf-expr))))
+  #.(locally-disable-sql-reader-syntax))
+
