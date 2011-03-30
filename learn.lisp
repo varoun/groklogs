@@ -100,6 +100,10 @@
 	    
   #.(locally-disable-sql-reader-syntax)))
 
+;;; Creating a nodeparam string.
+(defun make-nodeparam (nodeid paramid)
+  (format nil "~2,'0d~2,'0d" nodeid paramid))
+
 ;;; Datapoints - We collapse all successive critical alerts for a node+service into one time
 ;;; slice. The datapoint class stores the timestamp when the alert went from CRIT to OK, i.e
 ;;; when it disappeared from the critical set, node and parameter ids and the set of features
@@ -138,7 +142,7 @@
 	 (paramid (datapoint-paramid dp))
 	 (positives (prin1-to-string (datapoint-positive dp)))
 	 (negetives (prin1-to-string (datapoint-negetive dp)))
-	 (nodeparam (format nil "~2,'0d~2,'0d" nodeid paramid)))
+	 (nodeparam (make-nodeparam nodeid paramid)))
     (execute-command 
      (format nil "insert into datapoints values (~a, \"~a\", \"~a\", ~a)"
 	     timestamp nodeparam positives 1))
@@ -250,6 +254,9 @@
        (format nil "insert into featurespace values (\"~a\", \"~a\")"
 	       node-param
 	       (prin1-to-string feature-space))))))
+
+
+
 
 ;;; Selectors for the names of nodes and parameters.
 (defun node-name (nid)
