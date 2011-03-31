@@ -268,8 +268,8 @@
 (defun node-and-param-name (fvector index)
   (let* ((node-param-ids 
 	 (elt fvector (1- (abs index)))) ; features use 1 based index, fvectors are 0 based.
-	(nname (node-name (first node-param-ids)))
-	(pname (param-name (second node-param-ids))))
+	 (nname (node-name (first node-param-ids)))
+	 (pname (param-name (second node-param-ids))))
     (if (minusp index) ; The DNF code can negate features!
 	(concatenate 'string "-" nname ":" pname)
 	(concatenate 'string  nname ":" pname))))
