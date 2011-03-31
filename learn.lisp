@@ -168,14 +168,14 @@
 ;;; Building all datapoints.
 (defun build-datapoints ()
   #.(locally-enable-sql-reader-syntax)
-  (let ((object-buffer (make-array 1 :fill-pointer 0 :adjustable t)))
+  (let ((object-buffer '()))
     (do-query ((timestamp criticals)
 	       [select [*] :from [currentset]])
       (let ((crits (read-from-string criticals))
 	    (object-list nil))
 	;; First update existing objects.
 	(loop 
-	   for dp-object across object-buffer while dp-object do ;dont remove 'while dp-obj...
+	   for dp-object in object-buffer do 
 	     (let ((event (list (datapoint-nodeid dp-object) (datapoint-paramid dp-object))))
 	       (push event object-list)
 	       (if (member event crits :test #'equal)
@@ -185,15 +185,15 @@
 				     1)
 		   (progn
 		     (update-datapoint dp-object timestamp crits 0)
-		     (delete dp-object object-buffer :test #'equal)))))
+		     (setf object-buffer (remove dp-object object-buffer :test #'equal))))))
 	;; Add objects for new crits.
 	(dolist (crit crits)
 	  (unless (member crit object-list :test #'equal)
-	    (vector-push-extend (make-datapoint timestamp
-						(first crit)
-						(second crit)
-						(remove crit crits :test #'equal))
-				object-buffer))))))
+	    (push (make-datapoint timestamp
+				  (first crit)
+				  (second crit)
+				  (remove crit crits :test #'equal))
+		  object-buffer))))))
   #.(locally-disable-sql-reader-syntax))
 
 ;;; Building the feature space.
