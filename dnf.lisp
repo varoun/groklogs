@@ -157,6 +157,13 @@ conjunct"
   #.(locally-disable-sql-reader-syntax))
 
 
+;;; Relearning dependencies. 
+(defun relearn-dependencies ()
+  (execute-command "drop table dependencies")
+  (execute-command "create table dependencies (nodeid integer, paramid integer, dnf
+varchar(200))")
+  (learn-dependencies))
+
 ;;; Printing the dependencies.
 (defun print-dependencies-dnf ()
   #.(locally-enable-sql-reader-syntax)

@@ -1,0 +1,275 @@
+CL-USER> (initialise-system)
+Loading: /home/varoun/Code/groklogs-ng/packages.lisp
+To load "cl-ppcre":
+  Load 1 ASDF system:
+    cl-ppcre
+; Loading "cl-ppcre"
+
+To load "clsql-sqlite3":
+  Load 1 ASDF system:
+    clsql-sqlite3
+; Loading "clsql-sqlite3"
+
+Loading: /home/varoun/Code/groklogs-ng/utils.lisp
+Loading: /home/varoun/Code/groklogs-ng/schema.lisp
+Loading: /home/varoun/Code/groklogs-ng/preprocess.lisp
+Loading: /home/varoun/Code/groklogs-ng/learn.lisp
+;Compiler warnings :
+;   In BUILD-DATAPOINTS: Function result ignored in call to DELETE
+;   In BUILD-DATAPOINTS: Function result ignored in call to DELETE
+Loading: /home/varoun/Code/groklogs-ng/dnf.lisp
+NIL
+CL-USER> (in-package :com.groklogs.schema)
+#<Package "COM.GROKLOGS.SCHEMA">
+SCHEMA> (initialise-db)
+Finished initialising the DB.
+NIL
+SCHEMA> (in-package :com.groklogs.preprocess)
+#<Package "COM.GROKLOGS.PREPROCESS">
+PREPROCESS> (parse-log-file #p"/home/varoun/tmp/data/nagios/new3/nagios.log" :log-format 'nagios)
+Lines parsed successfully: 585820
+Lines not parsed: 37378
+Total Hosts: 94
+Total Parameters: 30
+NIL
+PREPROCESS> (in-package :com.groklogs.learn)
+#<Package "COM.GROKLOGS.LEARN">
+LEARN> (build-current-set)
+(55 1) Went OK!
+(61 2) Went OK!
+(4 2) Went OK!
+(61 1) Went OK!
+(48 1) Went OK!
+(3 1) Went OK!
+(34 2) Went OK!
+(59 2) Went OK!
+(49 1) Went OK!
+(35 2) Went OK!
+(34 2) Went OK!
+(28 1) Went OK!
+(28 1) Went OK!
+(79 1) Went OK!
+(66 16) Went OK!
+(66 2) Went OK!
+(55 16) Went OK!
+(66 16) Went OK!
+(6 2) Went OK!
+(79 1) Went OK!
+(70 1) Went OK!
+(48 1) Went OK!
+(63 1) Went OK!
+(80 1) Went OK!
+(78 1) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(81 2) Went OK!
+(53 1) Went OK!
+(48 1) Went OK!
+(79 1) Went OK!
+(81 2) Went OK!
+(66 16) Went OK!
+(55 1) Went OK!
+(48 1) Went OK!
+(6 4) Went OK!
+(79 1) Went OK!
+(94 1) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(48 1) Went OK!
+(28 1) Went OK!
+(35 2) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(66 16) Went OK!
+(55 1) Went OK!
+(49 2) Went OK!
+(61 2) Went OK!
+(11 2) Went OK!
+(83 2) Went OK!
+(55 1) Went OK!
+(66 16) Went OK!
+(6 16) Went OK!
+(28 1) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(29 1) Went OK!
+(55 16) Went OK!
+(66 2) Went OK!
+(29 1) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(48 1) Went OK!
+(28 1) Went OK!
+(34 2) Went OK!
+(35 2) Went OK!
+(28 1) Went OK!
+(12 10) Went OK!
+(12 15) Went OK!
+(12 9) Went OK!
+(79 1) Went OK!
+(66 16) Went OK!
+(6 2) Went OK!
+(6 16) Went OK!
+(28 1) Went OK!
+(6 16) Went OK!
+(28 1) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(66 16) Went OK!
+(66 2) Went OK!
+(79 1) Went OK!
+(63 1) Went OK!
+(28 1) Went OK!
+(28 1) Went OK!
+(66 2) Went OK!
+(81 2) Went OK!
+(55 1) Went OK!
+(66 2) Went OK!
+(66 2) Went OK!
+(48 1) Went OK!
+(28 1) Went OK!
+(66 16) Went OK!
+(6 2) Went OK!
+(6 16) Went OK!
+(28 1) Went OK!
+(55 1) Went OK!
+(28 1) Went OK!
+(48 1) Went OK!
+(28 1) Went OK!
+(55 1) Went OK!
+(48 1) Went OK!
+(6 2) Went OK!
+(6 16) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(28 1) Went OK!
+(28 1) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(28 1) Went OK!
+(66 2) Went OK!
+(55 1) Went OK!
+(28 1) Went OK!
+(66 16) Went OK!
+(55 1) Went OK!
+(35 2) Went OK!
+(66 16) Went OK!
+(66 2) Went OK!
+(55 1) Went OK!
+(79 1) Went OK!
+(61 2) Went OK!
+(66 16) Went OK!
+(79 1) Went OK!
+(28 1) Went OK!
+(79 1) Went OK!
+(66 16) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(66 16) Went OK!
+(48 1) Went OK!
+(12 10) Went OK!
+(12 9) Went OK!
+(12 15) Went OK!
+(66 16) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(28 1) Went OK!
+(66 2) Went OK!
+(55 1) Went OK!
+(63 1) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(3 2) Went OK!
+(34 2) Went OK!
+(35 2) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(79 1) Went OK!
+(28 1) Went OK!
+(48 1) Went OK!
+(11 2) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(6 2) Went OK!
+(48 1) Went OK!
+(79 1) Went OK!
+(48 1) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(6 2) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(3 2) Went OK!
+(66 4) Went OK!
+(79 1) Went OK!
+(55 1) Went OK!
+(59 16) Went OK!
+(28 1) Went OK!
+(28 1) Went OK!
+(19 2) Went OK!
+(61 2) Went OK!
+(48 1) Went OK!
+(79 1) Went OK!
+(66 2) Went OK!
+(79 1) Went OK!
+(79 1) Went OK!
+(28 1) Went OK!
+(66 2) Went OK!
+(48 1) Went OK!
+(6 4) Went OK!
+(66 16) Went OK!
+(79 1) Went OK!
+(66 16) Went OK!
+(59 4) Went OK!
+(59 4) Went OK!
+(31 4) Went OK!
+(31 4) Went OK!
+(48 1) Went OK!
+(66 16) Went OK!
+(66 2) Went OK!
+NIL
+LEARN> (build-datapoints)
+NIL
+LEARN> (build-complete-featurespaces)
+NIL
+LEARN> (learn-dependencies)
+engine6.pipes.ac4.yahoo.com:yapache <---: (NIL (1))
+engine10.pipes.ac4.yahoo.com:ysar <---: (NIL (1))
+engine9.pipes.ac4.yahoo.com:ysar <---: (NIL (1))
+rsscache1.pipes.ch1.yahoo.com:yapache <---: (NIL)
+engine2.pipes.ac4.yahoo.com:ysar <---: (NIL)
+engine4.pipes.ac4.yahoo.com:ysar <---: (NIL)
+ecache1.pipes.sp1.yahoo.com:ysar <---: (NIL (1))
+ecache3.pipes.sp1.yahoo.com:ysar <---: ((1))
+ecache1.pipes.ch1.yahoo.com:ysar <---: (NIL)
+vespa2.pipes.re3.yahoo.com:ysar <---: (NIL)
+engine2.pipes.ac4.yahoo.com:yapache <---: (NIL (1))
+engine3.pipes.ac4.yahoo.com:yapache <---: (NIL (1))
+ecache2.pipes.re3.yahoo.com:squid <---: ((2) (-2) (1))
+fe6.pipes.re3.yahoo.com:ysar <---: ((1) (-2))
+rsscache3.pipes.sp1.yahoo.com:yapache <---: ((2) (-2))
+rsscache2.pipes.sp1.yahoo.com:squid <---: ((-2) (2) (1))
+confdb0102.mlk.re3.yahoo.com:mysql <---: ((3) (1))
+confdb0102.mlk.re3.yahoo.com:repl <---: ((-7) (1))
+confdb0102.mlk.re3.yahoo.com:mysqlslave <---: ((-7) (7 1) (2))
+ecache2.pipes.sp1.yahoo.com:ysar <---: ((-4) (2) (1))
+engine12.pipes.ac4.yahoo.com:yapache <---: ((3) (-8) (1))
+engine11.pipes.ac4.yahoo.com:yapache <---: ((7 -6) (-8) (1))
+engine8.pipes.ac4.yahoo.com:yapache <---: ((-4) (1))
+rsscache2.pipes.sp1.yahoo.com:yapache <---: ((-2) (2) (1))
+engine9.pipes.ac4.yahoo.com:yapache <---: ((-4) (-3) (1))
+rsscache1.pipes.sp1.yahoo.com:htproxy <---: (NIL)
+ecache2.pipes.re3.yahoo.com:ysar <---: ((10 -8 -9) (9) (5) (-11) (4) (1))
+rsscache1.pipes.ch1.yahoo.com:squid <---: (NIL)
+engine7.pipes.ac4.yahoo.com:yapache <---: (NIL)
+engine10.pipes.ac4.yahoo.com:yapache <---: ((-7 10) (-10 -9) (-12) (3) (2) (1))
+ecache1.pipes.re3.yahoo.com:ysar <---: ((-8 9 -7) (8) (5) (-10) (4) (3) (2) (1))
+rsscache2.pipes.sp1.yahoo.com:htproxy <---: ((2) (-2) (1))
+vespa1.pipes.re3.yahoo.com:ysar <---: ((14) (9) (-9 -14 -2 -10 -13 -15) (15) (11) (10) (2) (6) (5) (4) (3) (7) (1))
+rsscache1.pipes.ch1.yahoo.com:htproxy <---: (NIL)
+rsscache2.pipes.ch1.yahoo.com:htproxy <---: (NIL)
+ecache3.pipes.re3.yahoo.com:ysar <---: ((-13) (-5 -7 -10 -11) (11 -6 -7 -10) (8) (7) (6) (2))
+rsscache1.pipes.sp1.yahoo.com:squid <---: ((-5 -7 -8) (8) (5) (2) (-7 2) (4) (1) (3))
+rsscache1.pipes.sp1.yahoo.com:yapache <---: ((4 3) (-3 -4) (-3 4) (-4 3) (1))
+NIL
+LEARN> 

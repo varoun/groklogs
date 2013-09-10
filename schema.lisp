@@ -6,8 +6,8 @@
 
 ;;;; SQLite DB schemas.
 (defun initialise-db ()
-  ;(connect (list ":memory:") :database-type :sqlite3)
-  (connect (list "/home/varoun/tmp/data/nagios/new3/nagios.db") :database-type :sqlite3)
+  (connect (list ":memory:") :database-type :sqlite3)
+  ;(connect (list "/home/varoun/tmp/data/nagios/new3/nagios.db") :database-type :sqlite3)
   ;; Turn off features for increasing speed.
   (execute-command "PRAGMA synchronous = 0")
   (execute-command "PRAGMA journal_mode = OFF")
